@@ -1,3 +1,7 @@
+"""Concatenate adata.
+"""
+
+
 import scanpy as sc
 from tqdm import tqdm
 
@@ -10,6 +14,7 @@ if __name__ == '__main__':
     out_file = './outs/adata/concatenated.h5ad'
     
     # load adatas
+    print('loading data...')
     adatas = {}
     for f in tqdm(Path(data_dir).glob('./*.h5ad'), total=len(list(Path(data_dir).glob('./*.h5ad')))):
         sample = f.stem
@@ -17,8 +22,11 @@ if __name__ == '__main__':
         adatas[sample].var_names = list(adatas[sample].var['ens_id'])  # set var_names to gene ids
 
     # concatenate
-    adata = sc.concat(adatas, label='sample')
+    print('concatenating...')
+    adata = sc.concat(adatas, label='sample', merge='same')
     adata.obs_names_make_unique()
+    sc.pp.filter_genes(adata, min_cells=10)  # filter genes
+    sc.pp.filter_genes(adata, min_counts=5)  # filter genes
     adata.var_names = list(adata.var['symbol'])  # set var_names back to gene symbols
     adata.var_names_make_unique()
     print(adata)
