@@ -3,6 +3,7 @@
 ### Environment
 
 ```shell
+# create conda environment
 conda create -n sc python=3.12 -y
 conda activate sc
 pip install 'scanpy[leiden]'
@@ -12,6 +13,7 @@ pip install scrublet harmonypy notebook
 ### Run
 
 ```shell
+# run line by line
 conda activate sc
 python 00_create_adata.py
 python 01_qc.py
@@ -47,8 +49,33 @@ jupyter execute 04_annotate_lvl1.ipynb --inplace
 ### Integration
 
 1. Harmony was good.
-2. Batch effect was removed using Harmony while some clusters were predominently found in one sample. **[TODO: exclude?]**
+2. Batch effect was removed using Harmony while some clusters (14) were predominently found in one sample. [TODO: exclude?]
 
 ### Annotation
 
 Add cell type annotation using Leiden.
+
+```python
+# markers
+marker_genes = {
+    'Osteoblast': ['COL11A1', 'SOX9', 'SP7', 'RUNX2', 'MYC'],
+    'Fibroblast': ['COL3A1', 'COL6A2', 'MYL9', 'MGP', 'THY1'],
+    'Monocyte/Macrophage': ['CD14', 'C1QA', 'C1QC', 'MS4A6A', 'HLA-DPA1'],
+    'Osteoclast': ['ACP5', 'MMP9', 'CTSK', 'ANPEP', 'SLC9B2'],
+    'Neutrophil': ['S100A9', 'FCGR3B', 'CSF3R', 'G0S2', 'CXCR2'],
+    'Mast': ['TPSAB1', 'TPSB2', 'GATA2', 'MS4A2', 'KIT'],
+    'T/NK': ['CD2', 'CD3D', 'IL32', 'CCL5', 'NKG7', 'GNLY'],
+    'Endothelial': ['VWF', 'PECAM1', 'CD34', 'CLEC14A', 'PLVAP'],
+}
+```
+
+
+### CNV analysis
+
+[TODO: InferCNV or/and Copykat]
+
+## Writing
+
+### Colors
+
+![colors](./assets/colors.png)
