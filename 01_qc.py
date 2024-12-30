@@ -1,5 +1,4 @@
-'''
-QC Strategy:
+"""QC Strategy:
 
 1. Cells with < 500 genes were excluded.
 2. Genes expressed in < 0 cells were exclude (not filtering genes before merging).
@@ -13,20 +12,20 @@ QC Strategy:
 8. Leiden clusters with mean doublet score greater than 2 standard deviations
    from the mean doublet score of all cells the were excluded.
 
-'''
+"""
 
 
 import scanpy as sc
 import matplotlib.pyplot as plt
+from tqdm import tqdm
+
 from pathlib import Path
 import logging
-from tqdm import tqdm
-import warnings
 
 
 def set_logger(name, log_file, level=logging.INFO, sh_level=logging.DEBUG, fh_level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'):
-    '''
-    set logger with StreamHandler and FileHandler
+    """
+    Set logger with StreamHandler and FileHandler.
 
     Args:
         name: str, name of the logger
@@ -39,7 +38,7 @@ def set_logger(name, log_file, level=logging.INFO, sh_level=logging.DEBUG, fh_le
     Returns:
         logger: logger object
 
-    '''
+    """
     logger = logging.getLogger(name)
     logger.setLevel(level)
     formatter = logging.Formatter(format)
@@ -58,8 +57,8 @@ def set_logger(name, log_file, level=logging.INFO, sh_level=logging.DEBUG, fh_le
 
 
 def plot_figs(adata, fig_dir, stage):
-    '''
-    plot figures for quality control
+    """
+    Plot figures for quality control.
 
     Args:
         adata: AnnData object, adata to plot
@@ -69,7 +68,7 @@ def plot_figs(adata, fig_dir, stage):
     Returns:
         None
 
-    '''
+    """
     assert stage in ['before', 'after'], 'stage must be either "before" or "after"'
     sc.pl.violin(
         adata,
@@ -101,8 +100,8 @@ def plot_figs(adata, fig_dir, stage):
 
 
 def qc(adata, logger, fig_dir, min_genes=500, min_cells=0):
-    '''
-    quality control for raw adata
+    """
+    Quality control for raw adata.
 
     Args:
         adata: AnnData object, raw adata
@@ -114,8 +113,7 @@ def qc(adata, logger, fig_dir, min_genes=500, min_cells=0):
     Returns:
         adata: AnnData object, adata after quality control
 
-    '''
-    warnings.filterwarnings('ignore', message='are not unique', category=UserWarning)
+    """
     Path(fig_dir).mkdir(parents=True, exist_ok=True)
 
     shape = adata.shape
@@ -209,19 +207,21 @@ if __name__ == "__main__":
     log_file = './logs/qc.log'
     fig_dir = './outs/figs/qc/'
 
+
     # load data
     print('loading data...')
     adatas = {}
     for f in tqdm(Path(data_dir).glob('./*.h5ad'), total=len(list(Path(data_dir).glob('./*.h5ad')))):
-        id = f.stem
-        adatas[id] = sc.read_h5ad(f)
+        sample = f.stem
+        adatas[sample] = sc.read_h5ad(f)
 
+    # qc and save
     Path(log_file).parent.mkdir(parents=True, exist_ok=True)
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     logger = set_logger('qc', log_file)
-    for id, adata in adatas.items():
-        logger.info('quality control for %s' % id)
-        adata = qc(adata, logger, fig_dir='%s/%s/' % (fig_dir, id), min_genes=500, min_cells=0)
-        adata.write('%s/%s.h5ad' % (out_dir, id))
+    for sample, adata in adatas.items():
+        logger.info('quality control for %s' % sample)
+        adata = qc(adata, logger, fig_dir='%s/%s/' % (fig_dir, sample), min_genes=500, min_cells=0)
+        adata.write('%s/%s.h5ad' % (out_dir, sample))
 
     print('Done!')

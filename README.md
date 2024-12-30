@@ -6,7 +6,6 @@ conda activate sc
 pip install 'scanpy[leiden]'
 pip install scrublet
 pip install harmonypy
-pip install bbknn
 pip install notebook
 
 conda create -n r433 python=3.10 -y
@@ -21,9 +20,6 @@ R
 > devtools::install_github("navinlabcode/copykat")
 > BiocManager::install("infercnv")
 > q()
-
-
-conda create -n infercnv bioconda::bioconductor-infercnv=1.18.1 -y
 ```
 
 ### Run
@@ -52,8 +48,8 @@ Rscript 06b_infercnv_small.R > ./logs/infercnv.log
 
 #### Integration
 
-1. Harmony turned out to perform better than BBKNN
-2. Batch effect was removed using harmony while some clusters were predominently found in only one sample
+1. Harmony was good.
+2. Batch effect was removed using harmony while some clusters were predominently found in only one sample.
 
 #### Copykat
 
