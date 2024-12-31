@@ -53,9 +53,10 @@ out_dir <- "./outs/infercnv/"
 
 dirs <- dir(data_dir)
 for (d in dirs) {
-  raw_counts_matrix <- as.matrix(read_mtx(file.path(data_dir, d))[[1]])
-  ref_group_names <- c("Fibroblast", "Monocyte/Macrophage", "Osteoclast",
-                       "Neutrophil", "Mast", "T/NK", "Endothelial")
+  raw_counts_matrix <- as.matrix(read_mtx(file.path(data_dir, d),
+                                 use_symbol = FALSE)[[1]])
+  ref_group_names <- c("Monocyte/Macrophage", "Osteoclast", "Neutrophil",
+                       "Mast", "T/NK", "Endothelial")
   annotations_file <- file.path(data_dir, d, "annotation.tsv")
   res_dir <- file.path(out_dir, d)
   if (!dir.exists(res_dir)) {
