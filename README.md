@@ -3,11 +3,20 @@
 ### Environment
 
 ```shell
-# create conda environment
+# create python environment
 conda create -n sc python=3.12 -y
 conda activate sc
 pip install 'scanpy[leiden]'
 pip install scrublet harmonypy notebook
+```
+
+```shell
+# create R environment
+conda create -n r433 python=3.10 -y
+conda activate r433
+conda install conda-forge::r-base=4.3.3 -y
+conda install conda-forge::r-seurat -y
+conda install bioconda::bioconductor-infercnv -y
 ```
 
 ### Run
@@ -20,9 +29,10 @@ python 01_qc.py
 python 02_concatenate.py
 python 03_harmony.py
 jupyter execute 04_annotate_lvl1.ipynb --inplace
+python 05a_prepare_data.py
+wget https://data.broadinstitute.org/Trinity/CTAT/cnv/hg38_gencode_v27.txt -P ./data/
+conda activate r433 && Rscript 05b_infercnv.R && conda deactivate
 ```
-
-
 
 ## Results
 
@@ -69,10 +79,11 @@ marker_genes = {
 }
 ```
 
-
 ### CNV analysis
 
-[TODO: InferCNV or/and Copykat]
+#### InferCNV
+
+#### Copykat
 
 ## Writing
 
