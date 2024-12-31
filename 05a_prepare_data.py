@@ -1,3 +1,7 @@
+"""Prepare data for copykat.
+"""
+
+
 import scanpy as sc
 from tqdm import tqdm
 
@@ -18,6 +22,5 @@ if __name__ == '__main__':
     for sample, sample_adata in tqdm(adatas.items()):
         # counts
         io.h5ad2mtx(sample_adata, '%s/%s' % (out_dir, sample))
-        sample_adata.obs['celltype_lvl1'].to_csv('%s/%s/annotation.tsv' % (out_dir, sample), sep='\t', index=True, header=False)
 
     print('Done!')

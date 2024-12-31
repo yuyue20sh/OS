@@ -30,8 +30,7 @@ python 02_concatenate.py
 python 03_harmony.py
 jupyter execute 04_annotate_lvl1.ipynb --inplace
 python 05a_prepare_data.py
-wget https://data.broadinstitute.org/Trinity/CTAT/cnv/hg38_gencode_v27.txt -P ./data/
-conda activate r433 && Rscript 05b_infercnv.R && conda deactivate
+conda activate r433 && Rscript 05b_copykat.R && conda deactivate
 ```
 
 ## Results
