@@ -78,11 +78,9 @@ marker_genes = {
 }
 ```
 
-### CNV analysis
+### Copykat
 
-#### InferCNV
-
-#### Copykat
+"low confidence in classification" and "WARNING! NOT CONVERGENT!" in DLJM44, WBXM16, WBXM16_2, WYQM12, XZHM13
 
 ## Writing
 
