@@ -211,7 +211,7 @@ if __name__ == "__main__":
     # load data
     print('loading data...')
     adatas = {}
-    for f in tqdm(Path(data_dir).glob('./*.h5ad'), total=len(list(Path(data_dir).glob('./*.h5ad')))):
+    for f in tqdm(list(Path(data_dir).glob('./*.h5ad'))):
         sample = f.stem
         adatas[sample] = sc.read_h5ad(f)
 

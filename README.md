@@ -16,7 +16,9 @@ conda create -n r433 python=3.10 -y
 conda activate r433
 conda install conda-forge::r-base=4.3.3 -y
 conda install conda-forge::r-seurat -y
-conda install bioconda::bioconductor-infercnv -y
+conda install conda-forge::r-devtools -y
+R
+> devtools::install_github("navinlabcode/copykat")
 ```
 
 ### Run
@@ -82,7 +84,17 @@ marker_genes = {
 
 "low confidence in classification" and "WARNING! NOT CONVERGENT!" in DLJM44, WBXM16, WBXM16_2, WYQM12, XZHM13
 
+1. Fibroblast and Osteoblast didn't match the copykat prediction perfectly.
+   ![copykat](./assets/copykat_pred.png)
+   Although adding resolution in leiden clustering recognized cluster 32 in `leiden_lvl1_2.0`, gene expression of cluster 32 represented fibroblast type.
+   ![cls32_copykat](./assets/cls32_copykat.png)
+   ![cls32_exp](./assets/cls32_exp.png)
+   As a result, we still considered cluster 32 as fibroblast.
+2. Osteoclast also showed copy number alternation, probably due to the cell fusion.
+3. [TODO: CNV]
+
 ## Writing
+
 
 ### Colors
 
